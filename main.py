@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """Write the one funny line to /output/entry.txt.
 
-The entry is a single line of 45 characters, no trailing newline,
+The entry is a single line of 69 characters, no trailing newline,
 inside the competition's 1-140 character gate.
 """
 
 import os
 
-ENTRY = "My toaster has two settings: bread and arson."
+ENTRY = "The on-call phone rang at 3 a.m. It was my own code, asking for help."
 OUTPUT_PATH = "/output/entry.txt"
+MAX_CHARS = 140
 
 
 def main() -> None:
+    # Gate: entry must be a single non-blank line of 1-140 characters.
+    assert 1 <= len(ENTRY) <= MAX_CHARS, f"ENTRY must be 1-{MAX_CHARS} chars, got {len(ENTRY)}"
+    assert "\n" not in ENTRY, "ENTRY must be a single line"
+    assert ENTRY.strip(), "ENTRY must not be only whitespace"
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
         f.write(ENTRY)
