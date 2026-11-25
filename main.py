@@ -12,11 +12,27 @@ OUTPUT_PATH = "/output/entry.txt"
 MAX_CHARS = 140
 
 
+def validate_entry(entry: str, max_chars: int = MAX_CHARS) -> str:
+    """Check the entry against the competition gate and return it unchanged.
+
+    The gate requires a single non-blank line of 1 to max_chars
+    characters. Any violation raises AssertionError with a message
+    naming the failed rule, so a bad entry stops the run before
+    anything is written to disk. Validation runs first on purpose:
+    the write that follows assumes the entry already passed, and
+    the read-back check at the end only confirms the bytes on disk.
+    """
+    assert 1 <= len(entry) <= max_chars, (
+        f"ENTRY must be 1-{max_chars} chars, got {len(entry)}"
+    )
+    assert "\n" not in entry, "ENTRY must be a single line"
+    assert entry.strip(), "ENTRY must not be only whitespace"
+    return entry
+
+
 def main() -> None:
     # Gate: entry must be a single non-blank line of 1-140 characters.
-    assert 1 <= len(ENTRY) <= MAX_CHARS, f"ENTRY must be 1-{MAX_CHARS} chars, got {len(ENTRY)}"
-    assert "\n" not in ENTRY, "ENTRY must be a single line"
-    assert ENTRY.strip(), "ENTRY must not be only whitespace"
+    validate_entry(ENTRY)
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
         # No trailing newline: the gate counts characters, so a newline
