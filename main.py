@@ -19,6 +19,9 @@ def main() -> None:
     assert ENTRY.strip(), "ENTRY must not be only whitespace"
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
+        # No trailing newline: the gate counts characters, so a newline
+        # would push the file past the entry itself and break the
+        # single-line requirement.
         f.write(ENTRY)
     # Read-back verification: the bytes on disk must be exactly ENTRY,
     # with no trailing newline added by the write.
