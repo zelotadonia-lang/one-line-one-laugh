@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Write the one funny line to /output/entry.txt.
+
+The entry is a single line of 45 characters, no trailing newline,
+inside the competition's 1-140 character gate.
+"""
+
+import os
+
+ENTRY = "My toaster has two settings: bread and arson."
+OUTPUT_PATH = "/output/entry.txt"
+
+
+def main() -> None:
+    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
+        f.write(ENTRY)
+
+
+if __name__ == "__main__":
+    main()
